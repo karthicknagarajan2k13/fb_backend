@@ -1,0 +1,2036 @@
+  [1m[36m (135.3ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (141.1ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to DeviseCreateUsers (20170217072401)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217072401"]]
+  [1m[36m (116.3ms)[0m  [1mcommit transaction[0m
+Migrating to AddFieldsToUser (20170217075403)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "phone" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "first_name" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "last_name" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "username" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "date_of_birth" datetime[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217075403"]]
+  [1m[36m (120.9ms)[0m  [1mcommit transaction[0m
+Migrating to CreateRoles (20170217080110)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "roles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217080110"]]
+  [1m[36m (131.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddRoleToUser (20170217080725)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "role" varchar[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217080725"]]
+  [1m[36m (131.0ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "admin"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "admin"], ["created_at", "2017-08-23 11:02:41.310035"], ["updated_at", "2017-08-23 11:02:41.310035"]]
+  [1m[36m (95.8ms)[0m  [1mcommit transaction[0m
+  [1m[35mRole Load (0.1ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "employee"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "employee"], ["created_at", "2017-08-23 11:02:41.409514"], ["updated_at", "2017-08-23 11:02:41.409514"]]
+  [1m[36m (115.4ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" = 'admin@yopmail.com' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("email", "encrypted_password", "username", "role", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["email", "admin@yopmail.com"], ["encrypted_password", "$2a$11$LdD68Vhd9gCiWqnLgkgol.Td78/FR5iwwSU9aEToDffpsliYjvR1G"], ["username", "Admin"], ["role", "admin"], ["created_at", "2017-08-23 11:02:41.722999"], ["updated_at", "2017-08-23 11:02:41.722999"]]
+  [1m[36m (351.8ms)[0m  [1mcommit transaction[0m
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-23 16:33:14 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by HomeController#index as HTML
+Completed 401 Unauthorized in 14ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-23 16:33:14 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (2.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (15.8ms)
+Completed 200 OK in 1896ms (Views: 1882.5ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-23 16:33:16 +0530
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2017-08-23 16:33:46 +0530
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ES6hY5trRttvBliK7GLhAMybxFuMzzRBiI5YnRA8RMdapg69aY1erGvRMrnylYW+hqeBwy5CFcFbXymR0QLctg==", "user"=>{"email"=>"admin@yopmail.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[35mUser Load (0.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["email", "admin@yopmail.com"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "last_sign_in_at" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "current_sign_in_ip" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["last_sign_in_at", "2017-08-23 11:03:46.770586"], ["current_sign_in_at", "2017-08-23 11:03:46.770586"], ["last_sign_in_ip", "127.0.0.1"], ["current_sign_in_ip", "127.0.0.1"], ["sign_in_count", 1], ["updated_at", "2017-08-23 11:03:46.771364"], ["id", 1]]
+  [1m[36m (275.2ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 433ms (ActiveRecord: 276.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-23 16:33:47 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 1]]
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 18ms (Views: 16.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-23 16:53:58 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  Rendered home/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 31ms (Views: 29.2ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 10:18:22 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by HomeController#index as HTML
+Completed 401 Unauthorized in 25ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (1.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (20.2ms)
+Completed 200 OK in 458ms (Views: 441.8ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 10:18:23 +0530
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2017-08-24 10:18:27 +0530
+Processing by Devise::RegistrationsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/new.html.erb within layouts/application (4.2ms)
+Completed 200 OK in 100ms (Views: 97.7ms | ActiveRecord: 0.0ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddConfirmableToDevise (20170824051142)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "confirmation_token" varchar[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "users" ADD "confirmed_at" datetime
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "users" ADD "confirmation_sent_at" datetime[0m
+  [1m[35m (0.0ms)[0m  select sqlite_version(*)
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_confirmation_token" ON "users" ("confirmation_token")[0m
+  [1m[35mSQL (0.1ms)[0m  UPDATE "users" SET "confirmed_at" = '2017-08-24 05:13:20.092375'
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824051142"]]
+  [1m[35m (135.5ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+
+
+Started POST "/users" for 127.0.0.1 at 2017-08-24 10:44:10 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"R1ibmU17nk3TgRDasnnkwgrnAK7S/rQSyzRYT8qputkE31XqGZskqoN6YwvE3cmYHd582rpxMbsWSuT6evngwA==", "user"=>{"email"=>"karthick@yopmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" = 'karthick@yopmail.com' LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES (?, ?, ?, ?, ?, ?)  [["email", "karthick@yopmail.com"], ["encrypted_password", "$2a$11$TIhZQxKW.JjDnETzmuTAheGbDNo1nmFYjJ6XR2BHFKYi7TlDxFDNy"], ["created_at", "2017-08-24 05:14:11.409274"], ["updated_at", "2017-08-24 05:14:11.409274"], ["confirmation_token", "Np8NrWo4n8x4FvbGSXCJ"], ["confirmation_sent_at", "2017-08-24 05:14:11.409594"]]
+  [1m[36m (121.8ms)[0m  [1mcommit transaction[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/mailer/confirmation_instructions.html.erb (1.9ms)
+
+Devise::Mailer#confirmation_instructions: processed outbound mail in 186.5ms
+
+Sent mail to karthick@yopmail.com (11.2ms)
+Date: Thu, 24 Aug 2017 10:44:11 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: karthick@yopmail.com
+Message-ID: <599e60a3b9c38_18e8247479c56637@php.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome karthick@yopmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=Np8NrWo4n8x4FvbGSXCJ">Confirm my account</a></p>
+
+Redirected to http://localhost:3000/
+Completed 302 Found in 716ms (ActiveRecord: 122.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 10:44:11 +0530
+Processing by HomeController#index as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:44:11 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (1.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (13.1ms)
+Completed 200 OK in 191ms (Views: 189.5ms | ActiveRecord: 0.0ms)
+  [1m[36m (121.3ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (124.5ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to DeviseCreateUsers (20170217072401)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217072401"]]
+  [1m[36m (138.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddFieldsToUser (20170217075403)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "phone" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "first_name" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "last_name" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "username" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "date_of_birth" datetime[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217075403"]]
+  [1m[36m (154.4ms)[0m  [1mcommit transaction[0m
+Migrating to CreateRoles (20170217080110)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "roles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217080110"]]
+  [1m[36m (153.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddRoleToUser (20170217080725)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "role" varchar[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217080725"]]
+  [1m[36m (164.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddConfirmableToDevise (20170824051142)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "users" ADD "confirmation_token" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "confirmed_at" datetime
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "confirmation_sent_at" datetime[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m  CREATE UNIQUE INDEX "index_users_on_confirmation_token" ON "users" ("confirmation_token")
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "users" SET "confirmed_at" = '2017-08-24 05:22:25.899622'[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170824051142"]]
+  [1m[36m (168.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "admin"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "admin"], ["created_at", "2017-08-24 05:22:33.609576"], ["updated_at", "2017-08-24 05:22:33.609576"]]
+  [1m[36m (191.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "employee"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "employee"], ["created_at", "2017-08-24 05:22:33.809124"], ["updated_at", "2017-08-24 05:22:33.809124"]]
+  [1m[36m (139.3ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" = 'admin@yopmail.com' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("email", "encrypted_password", "username", "role", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)  [["email", "admin@yopmail.com"], ["encrypted_password", "$2a$11$5PRFIxJP1Q4E5XMhdfeGJOZ3XCUddbVXPW9MVxK2Dnbj1VEiJIoou"], ["username", "Admin"], ["role", "admin"], ["created_at", "2017-08-24 05:22:34.108106"], ["updated_at", "2017-08-24 05:22:34.108106"], ["confirmation_token", "7rbFRjzURxePeMJVkNp6"], ["confirmation_sent_at", "2017-08-24 05:22:34.108355"]]
+  [1m[36m (148.9ms)[0m  [1mcommit transaction[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/mailer/confirmation_instructions.html.erb (2.6ms)
+
+Devise::Mailer#confirmation_instructions: processed outbound mail in 180.8ms
+
+Sent mail to admin@yopmail.com (5136.8ms)
+Date: Thu, 24 Aug 2017 10:52:34 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: admin@yopmail.com
+Message-ID: <599e629a6e82c_198d11e30ec72523@php.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome admin@yopmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=7rbFRjzURxePeMJVkNp6">Confirm my account</a></p>
+
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2017-08-24 10:56:00 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (1.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/new.html.erb within layouts/application (20.0ms)
+Completed 200 OK in 253ms (Views: 225.9ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2017-08-24 10:56:20 +0530
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"F+bJD5yiAJcmIyGIgWLL3lhoCmAi9OzowqnEKnipiiBUYQd8yEK6cHbYUln3xuaET1F2FEp7aUEf13ifyPnQOQ==", "user"=>{"email"=>"karthick@yopmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" = 'karthick@yopmail.com' LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES (?, ?, ?, ?, ?, ?)  [["email", "karthick@yopmail.com"], ["encrypted_password", "$2a$11$9Tpasjczmqqk/PAcGULOIOfkg5/OL9u34aomQKZ/AyX96mZLtLN6u"], ["created_at", "2017-08-24 05:26:20.310599"], ["updated_at", "2017-08-24 05:26:20.310599"], ["confirmation_token", "ATzxrBGx2zbBdTQyaTQ1"], ["confirmation_sent_at", "2017-08-24 05:26:20.310857"]]
+  [1m[36m (148.9ms)[0m  [1mcommit transaction[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/mailer/confirmation_instructions.html.erb (0.9ms)
+
+Devise::Mailer#confirmation_instructions: processed outbound mail in 137.8ms
+
+Sent mail to karthick@yopmail.com (4475.4ms)
+Date: Thu, 24 Aug 2017 10:56:20 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: karthick@yopmail.com
+Message-ID: <599e637c961c3_19df23f6f6858357@php.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome karthick@yopmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=ATzxrBGx2zbBdTQyaTQ1">Confirm my account</a></p>
+
+Redirected to http://localhost:3000/
+Completed 302 Found in 4950ms (ActiveRecord: 149.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 10:56:25 +0530
+Processing by HomeController#index as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:56:25 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (4.9ms)
+Completed 200 OK in 22ms (Views: 20.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/confirmation?confirmation_token=ATzxrBGx2zbBdTQyaTQ1" for 127.0.0.1 at 2017-08-24 10:57:05 +0530
+Processing by Devise::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"ATzxrBGx2zbBdTQyaTQ1"}
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."confirmation_token" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["confirmation_token", "ATzxrBGx2zbBdTQyaTQ1"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "users" SET "confirmed_at" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["confirmed_at", "2017-08-24 05:27:05.294160"], ["updated_at", "2017-08-24 05:27:05.294755"], ["id", 2]]
+  [1m[36m (154.1ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/users/sign_in
+Completed 302 Found in 169ms (ActiveRecord: 154.8ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:57:05 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (2.5ms)
+Completed 200 OK in 14ms (Views: 13.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2017-08-24 10:57:17 +0530
+Processing by Devise::RegistrationsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/new.html.erb within layouts/application (4.8ms)
+Completed 200 OK in 31ms (Views: 29.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:57:26 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (3.6ms)
+Completed 200 OK in 23ms (Views: 21.5ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2017-08-24 10:57:30 +0530
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"+cZy5hmBqigrlvdkX44X2Q6cDpJRxXqlygGNJw3E1aq6QbyVTWEQz3tthLUpKjqDGaVy5jlK/wwXfzGSvZSPsw==", "user"=>{"email"=>"karthick@yopmail.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["email", "karthick@yopmail.com"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "last_sign_in_at" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "current_sign_in_ip" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["last_sign_in_at", "2017-08-24 05:27:30.754120"], ["current_sign_in_at", "2017-08-24 05:27:30.754120"], ["last_sign_in_ip", "127.0.0.1"], ["current_sign_in_ip", "127.0.0.1"], ["sign_in_count", 1], ["updated_at", "2017-08-24 05:27:30.754811"], ["id", 2]]
+  [1m[36m (143.3ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 306ms (ActiveRecord: 143.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 10:57:30 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 36ms (Views: 34.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 10:57:53 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (4.1ms)
+Completed 200 OK in 34ms (Views: 31.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 10:59:59 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 22ms (Views: 19.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+Processing by Devise::SessionsController#new as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+Redirected to http://localhost:3000/
+Filter chain halted as :require_no_authentication rendered or redirected
+Completed 302 Found in 4ms (ActiveRecord: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.0ms)
+Completed 200 OK in 13ms (Views: 11.6ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 11:02:39 +0530
+  [1m[36m (98.1ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (124.4ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to DeviseCreateUsers (20170217072401)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170217072401"]]
+  [1m[36m (123.8ms)[0m  [1mcommit transaction[0m
+Migrating to AddFieldsToUser (20170217075403)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "phone" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "first_name" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "last_name" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "username" varchar
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "users" ADD "image" varchar[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "users" ADD "date_of_birth" datetime
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170217075403"]]
+  [1m[35m (120.7ms)[0m  commit transaction
+Migrating to CreateRoles (20170217080110)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "roles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170217080110"]]
+  [1m[35m (148.5ms)[0m  commit transaction
+Migrating to AddRoleToUser (20170217080725)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "role" varchar
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170217080725"]]
+  [1m[35m (142.8ms)[0m  commit transaction
+Migrating to AddConfirmableToDevise (20170824051142)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "confirmation_token" varchar
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "users" ADD "confirmed_at" datetime[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "confirmation_sent_at" datetime
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_confirmation_token" ON "users" ("confirmation_token")[0m
+  [1m[35mSQL (0.1ms)[0m  UPDATE "users" SET "confirmed_at" = '2017-08-24 05:47:52.587795'
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824051142"]]
+  [1m[35m (150.1ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mRole Load (0.2ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "admin"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "admin"], ["created_at", "2017-08-24 05:47:57.314659"], ["updated_at", "2017-08-24 05:47:57.314659"]]
+  [1m[36m (120.9ms)[0m  [1mcommit transaction[0m
+  [1m[35mRole Load (0.1ms)[0m  SELECT  "roles".* FROM "roles" WHERE "roles"."name" = ? LIMIT 1  [["name", "employee"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "roles" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "employee"], ["created_at", "2017-08-24 05:47:57.439575"], ["updated_at", "2017-08-24 05:47:57.439575"]]
+  [1m[36m (140.9ms)[0m  [1mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" = 'admin@yopmail.com' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("email", "encrypted_password", "username", "role", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)  [["email", "admin@yopmail.com"], ["encrypted_password", "$2a$11$.sR54liDsxtWyEk7Go26jezhzfkfGDdxu2RtB/SvD1rvWwXa.8hBC"], ["username", "Admin"], ["role", "admin"], ["created_at", "2017-08-24 05:47:57.802836"], ["updated_at", "2017-08-24 05:47:57.802836"], ["confirmation_token", "Rtkmk1FvYAVMSsQeLnF3"], ["confirmation_sent_at", "2017-08-24 05:47:57.803077"]]
+  [1m[36m (135.8ms)[0m  [1mcommit transaction[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/mailer/confirmation_instructions.html.erb (2.6ms)
+
+Devise::Mailer#confirmation_instructions: processed outbound mail in 178.0ms
+
+Sent mail to admin@yopmail.com (3394.7ms)
+Date: Thu, 24 Aug 2017 11:17:58 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: admin@yopmail.com
+Message-ID: <599e688e21338_1b6174b0e489881@php.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome admin@yopmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=Rtkmk1FvYAVMSsQeLnF3">Confirm my account</a></p>
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateBlogitPosts (20170824054917)
+  [1m[35m (0.1ms)[0m  begin transaction
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/php01/projects/FB/fb_backend/db/migrate/20170824054917_create_blogit_posts.blogit.rb:12)
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "blogit_posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "body" text NOT NULL, "state" varchar DEFAULT 'draft' NOT NULL, "comments_count" integer DEFAULT 0 NOT NULL, "blogger_id" integer, "blogger_type" varchar, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_blogit_posts_on_blogger_type_and_blogger_id" ON "blogit_posts" ("blogger_type", "blogger_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170824054917"]]
+  [1m[36m (164.6ms)[0m  [1mcommit transaction[0m
+Migrating to CreateBlogitComments (20170824054918)
+  [1m[35m (0.1ms)[0m  begin transaction
+DEPRECATION WARNING: `#timestamps` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in change at /home/php01/projects/FB/fb_backend/db/migrate/20170824054918_create_blogit_comments.blogit.rb:12)
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "blogit_comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "email" varchar NOT NULL, "website" varchar, "body" text NOT NULL, "post_id" integer NOT NULL, "state" varchar, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_blogit_comments_on_post_id" ON "blogit_comments" ("post_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824054918"]]
+  [1m[35m (147.9ms)[0m  commit transaction
+Migrating to AddDescriptionToPosts (20170824054919)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "blogit_posts" ADD "description" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824054919"]]
+  [1m[35m (140.3ms)[0m  commit transaction
+Migrating to ActsAsTaggableOnMigration (20170824054924)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar) 
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "taggings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer, "taggable_id" integer, "taggable_type" varchar, "tagger_id" integer, "tagger_type" varchar, "context" varchar(128), "created_at" datetime) [0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context" ON "taggings" ("taggable_id", "taggable_type", "context")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824054924"]]
+  [1m[35m (153.0ms)[0m  commit transaction
+Migrating to AddMissingUniqueIndices (20170824054925)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE UNIQUE INDEX "index_tags_on_name" ON "tags" ("name")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_tag_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mDROP INDEX "index_taggings_on_tag_id"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mDROP INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context"[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "taggings_idx" ON "taggings" ("tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824054925"]]
+  [1m[35m (144.8ms)[0m  commit transaction
+Migrating to AddTaggingsCounterCacheToTags (20170824054926)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "tags" ADD "taggings_count" integer DEFAULT 0
+  [1m[36mActsAsTaggableOn::Tag Load (0.1ms)[0m  [1mSELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" ASC LIMIT 1000[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170824054926"]]
+  [1m[36m (133.5ms)[0m  [1mcommit transaction[0m
+Migrating to AddMissingTaggableIndex (20170824054927)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='taggings_idx' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='taggings_idx' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m  CREATE  INDEX "index_taggings_on_taggable_id_and_taggable_type_and_context" ON "taggings" ("taggable_id", "taggable_type", "context")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170824054927"]]
+  [1m[35m (131.0ms)[0m  commit transaction
+Migrating to ChangeCollationForTagNames (20170824054928)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20170824054928"]]
+  [1m[36m (122.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_blogit_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_blogit_comments_on_post_id' AND type='index'
+[0m
+  [1m[35m (1.7ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_blogit_posts_on_blogger_type_and_blogger_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_blogit_posts_on_blogger_type_and_blogger_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_taggings_on_taggable_id_and_taggable_type_and_context' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='taggings_idx' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='taggings_idx' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_tags_on_name' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_tags_on_name' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_confirmation_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_reset_password_token' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:21:10 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Blogit::PostsController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 401 Unauthorized in 29ms (ActiveRecord: 0.7ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 11:21:10 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (1.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (16.7ms)
+Completed 200 OK in 569ms (Views: 552.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2017-08-24 11:21:16 +0530
+Processing by Devise::RegistrationsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/new.html.erb within layouts/application (4.8ms)
+Completed 200 OK in 26ms (Views: 24.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2017-08-24 11:21:26 +0530
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"yNVf/TMzLT4aFtTPbD8HdmK+n/AV5WDNQPhrO0FETlnhCnSfs3fgFICfnsMrzzIDxt+wolNxbV4kiacpgTaM7g==", "user"=>{"email"=>"karthick@yopmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Exists (0.1ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."email" = 'karthick@yopmail.com' LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["email", "karthick@yopmail.com"], ["encrypted_password", "$2a$11$3FUPJMr/9xtpZiWlzWDEOehRU5etqOt.hrC6I3MLRxe0.ln9Yx8Yq"], ["created_at", "2017-08-24 05:51:26.961307"], ["updated_at", "2017-08-24 05:51:26.961307"], ["confirmation_token", "CsWyrxuZPxFqE4y1fDXZ"], ["confirmation_sent_at", "2017-08-24 05:51:26.961570"]]
+  [1m[35m (124.4ms)[0m  commit transaction
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/mailer/confirmation_instructions.html.erb (1.0ms)
+
+Devise::Mailer#confirmation_instructions: processed outbound mail in 211.5ms
+
+Sent mail to karthick@yopmail.com (2948.2ms)
+Date: Thu, 24 Aug 2017 11:21:27 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: karthick@yopmail.com
+Message-ID: <599e695f4c8e8_1cc42827ec0994fe@php.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome karthick@yopmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=CsWyrxuZPxFqE4y1fDXZ">Confirm my account</a></p>
+
+Redirected to http://localhost:3000/
+Completed 302 Found in 3459ms (ActiveRecord: 124.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 11:21:30 +0530
+Processing by HomeController#index as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 11:21:30 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (3.5ms)
+Completed 200 OK in 21ms (Views: 19.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/confirmation?confirmation_token=CsWyrxuZPxFqE4y1fDXZ" for 127.0.0.1 at 2017-08-24 11:21:51 +0530
+Processing by Devise::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"CsWyrxuZPxFqE4y1fDXZ"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."confirmation_token" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["confirmation_token", "CsWyrxuZPxFqE4y1fDXZ"]]
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "users" SET "confirmed_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["confirmed_at", "2017-08-24 05:51:51.686309"], ["updated_at", "2017-08-24 05:51:51.686851"], ["id", 2]]
+  [1m[35m (144.5ms)[0m  commit transaction
+Redirected to http://localhost:3000/users/sign_in
+Completed 302 Found in 152ms (ActiveRecord: 145.2ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-08-24 11:21:51 +0530
+Processing by Devise::SessionsController#new as HTML
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/shared/_links.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/sessions/new.html.erb within layouts/application (2.8ms)
+Completed 200 OK in 19ms (Views: 17.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2017-08-24 11:22:00 +0530
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"NAb0vf+Q7XH2UwZOg58Ceqg7Di+yXZYqbXMhmju99vwd2d/ff9QgW2zaTELEbzcPDFohffTJm7kJAu2I+880Sw==", "user"=>{"email"=>"karthick@yopmail.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["email", "karthick@yopmail.com"]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "last_sign_in_at" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "current_sign_in_ip" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["last_sign_in_at", "2017-08-24 05:52:00.303352"], ["current_sign_in_at", "2017-08-24 05:52:00.303352"], ["last_sign_in_ip", "127.0.0.1"], ["current_sign_in_ip", "127.0.0.1"], ["sign_in_count", 1], ["updated_at", "2017-08-24 05:52:00.304126"], ["id", 2]]
+  [1m[35m (144.6ms)[0m  commit transaction
+Redirected to http://localhost:3000/
+Completed 302 Found in 299ms (ActiveRecord: 145.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 11:22:00 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 30ms (Views: 28.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:22:06 +0530
+Processing by Blogit::PostsController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_empty.html.erb (0.3ms)
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (28.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (36.8ms)
+  [1m[36mBlogit::Post Load (0.2ms)[0m  [1mSELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'  ORDER BY created_at DESC LIMIT 5 OFFSET 0[0m
+Completed 500 Internal Server Error in 152ms (ActiveRecord: 0.8ms)
+
+ActionView::Template::Error (undefined local variable or method `edit_user_registration_path' for #<#<Class:0x007f1f334eacd8>:0x007f1f334eea68>
+Did you mean?  edit_registration_path):
+    17: 
+    18: 	<% if user_signed_in? %>
+    19: 		Logged in as <strong><%= current_user.email %></strong>.
+    20: 		<%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+    21: 		<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    22: 	<% else %>
+    23: 		<%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+  app/views/layouts/application.html.erb:20:in `_app_views_layouts_application_html_erb__782980673334951937_41996100'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (5.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (23.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (22.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (40.9ms)
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+Processing by Blogit::PostsController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_empty.html.erb (0.0ms)
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (1.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (4.3ms)
+Completed 200 OK in 38ms (Views: 33.6ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 11:23:05 +0530
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:23:23 +0530
+Processing by Blogit::PostsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35m (0.2ms)[0m  SELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_empty.html.erb (0.0ms)
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (2.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (5.7ms)
+Completed 200 OK in 29ms (Views: 26.4ms | ActiveRecord: 0.4ms)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "blogit_posts" ("title", "description", "body", "state", "blogger_id", "blogger_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["title", "Everything you wanted to know about the Honey-Badger"], ["description", "The honey badger (Mellivora capensis), also known as the ratel or is a species of mustelid native to Africa, Southwest Asia, and the Indian subcontinent. Despite its name, the honey badger does not closely resemble other badger species; instead, it bears more anatomical similarities to weasels. It is classed as Least Concern by the IUCN owing to its extensive range and general environmental adaptations. It is primarily a carnivorous species and has few natural predators because of its thick skin and ferocious defensive abilities.\n"], ["body", "The honey badger has a fairly long body, but is distinctly thick-set and broad across the back. Its skin is remarkably loose, and allows it to turn and twist freely within it. The skin around the neck is 6 millimetres (0.24 in) thick, an adaptation to fighting conspecifics. The head is small and flat, with a short muzzle. The eyes are small, and the ears are little more than ridges on the skin, another possible adaptation to avoiding damage while fighting.\n\n### How it looks\n\nThe honey badger has short and sturdy legs, with five toes on each foot. The feet are armed with very strong claws, which are short on the hind legs and remarkably long on the forelimbs. It is a partially plantigrade animal whose soles are thickly padded and naked up to the wrists. The tail is short and is covered in long hairs, save for below the base.\n\nHoney badgers are the largest terrestrial mustelids in Africa. Adults measure 23 to 28 cm (9.1 to 11.0 in) in shoulder height and 55–77 cm (22–30 in) in body length, with the tail adding another 12–30 cm (4.7–11.8 in). Females are smaller than males. Males weigh 9 to 16 kg (20 to 35 lb) while females weigh 5 to 10 kg (11 to 22 lb) on average. Skull length is 13.9–14.5 cm (5.5–5.7 in) in males and 13 cm (5.1 in) for females.\n\nThere are two pairs of mammae. The honey badger possesses an anal pouch which, unusual among mustelids, is eversible,d a trait shared with hyenas and mongooses. The smell of the pouch is reportedly \"suffocating\", and may assist in calming bees when raiding beehives.\n\nThe skull bears little similarity to that of the European badger, and greatly resembles a larger version of a marbled polecat skull. The skull is very solidly built, with that of adults having no trace of an independent bone structure. The braincase is broader than that of dogs.\"\n"], ["state", "published"], ["blogger_id", 1], ["blogger_type", "User"], ["created_at", "2017-08-24 05:54:10.982234"], ["updated_at", "2017-08-24 05:54:10.982234"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT "tags".* FROM "tags" WHERE (LOWER(name) = LOWER('honeybadger') OR LOWER(name) = LOWER('badass') OR LOWER(name) = LOWER('animal') OR LOWER(name) = LOWER('awesome'))
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'honeybadger' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "honeybadger"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'badass' LIMIT 1[0m
+  [1m[35mSQL (0.0ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "badass"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'animal' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "animal"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'awesome' LIMIT 1[0m
+  [1m[35mSQL (0.0ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "awesome"]]
+  [1m[36mActsAsTaggableOn::Tag Load (0.2ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 1], ["taggable_type", "Blogit::Post"]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.2ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 1 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 1 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 1], ["context", "tags"], ["taggable_id", 1], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.156114"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 1]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 2 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 1 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 2], ["context", "tags"], ["taggable_id", 1], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.177642"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36mSQL (0.0ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 2]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 3 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 1 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 3], ["context", "tags"], ["taggable_id", 1], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.183328"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 3]]
+  [1m[36mSQL (0.0ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 3]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 4 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 1 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 4], ["context", "tags"], ["taggable_id", 1], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.188623"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 4]]
+  [1m[36mSQL (0.0ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 4]]
+  [1m[35m (139.3ms)[0m  commit transaction
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "blogit_posts" ("title", "description", "body", "state", "blogger_id", "blogger_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["title", "Why katanas are so cool"], ["description", "Historically, katana (刀) were one of the traditionally made Japanese swords (日本刀 nihontō) that were used by the samurai of feudal Japan. Modern versions of the katana are sometimes made using non-traditional materials and methods. The katana is characterized by its distinctive appearance: a curved, slender, single-edged blade with a circular or squared guard and long grip to accommodate two hands.\n"], ["body", "The production of swords in Japan is divided into specific time periods:\n  \n* Jokoto (ancient swords, until around 900 A.D.)\n* Koto (old swords from around 900–1596)\n* Shinto (new swords 1596–1780)\n* Shinshinto (newer swords 1781–1876)\n* Gendaito (modern swords 1876–1945)\n* Shinsakuto (newly made swords 1953–present)\n\nThe first use of \"katana\" (gatana) as a word to describe a long sword that was different from a tachi occurs as early as the Kamakura Period (1185–1333). These references to \"[uchigatana](https://en.wikipedia.org/wiki/Uchigatana)\" and \"tsubagatana\" seem to indicate a different style of sword, possibly a less costly sword for lower-ranking warriors. The evolution of the tachi into the katana seems to have started during the early Muromachi period (1337 to 1573).\n\n Starting around the year 1400, long swords signed with the \"katana\" signature were made. This was in response to samurai wearing their tachi in what is now called \"katana style\" (cutting edge up). Japanese swords are traditionally worn with the signature facing away from the wearer. When a tachi was worn in the style of a katana, with the cutting edge up, the tachi's signature would be facing the wrong way. The fact that swordsmiths started signing swords with a katana signature shows that some samurai of that time period had started wearing their swords in a different manner.\n \nThe rise in popularity of katana amongst samurai came about due to the changing nature of close-combat warfare. The quicker draw of the sword was well suited to combat where victory depended heavily on fast response times. The katana further facilitated this by being worn thrust through a belt-like sash (obi) with the sharpened edge facing up. Ideally, samurai could draw the sword and strike the enemy in a single motion. Previously, the curved tachi had been worn with the edge of the blade facing down and suspended from a belt.\n\nThe length of the katana blade varied considerably during the course of its history. In the late 14th and early 15th centuries, katana blades tended to have lengths between 70 and 73 cm (27½ and 28½ in). During the early 16th century, the average length approached closer to 60 cm (23½ in). By the late 16th century, the average length returned to approximately 73 cm (28½ in).\n\nThe katana was often paired with a similar smaller companion sword, such as a wakizashi or it could also be worn with the tantō, a smaller, similarly shaped dagger. The pairing of a katana with a smaller sword is called the daishō. Only samurai could wear the daisho: it represented the social power and personal honor of the [samurai](https://en.wikipedia.org/wiki/Samurai).\n\n## Modern katana (gendaito)\n\nDuring the Meiji period, the samurai class was gradually disbanded, and the special privileges granted to them were taken away including the right to carry swords in public. The Haitōrei Edict in 1876 forbade the carrying of swords in public except for certain individuals, such as former samurai lords (daimyo), the military, and police. Skilled swordsmiths had trouble making a living during this period as Japan modernized its military, and many swordsmiths started making other items, such as farm equipment, tools, and cutlery. Military action by Japan in China and Russia during the Meiji period helped revive interest in swords, but it was not until the Showa period that swords were produced on a large scale again. Japanese military swords produced between 1875 and 1945 are referred to as guntō (military swords).\n\nDuring the pre-World War II military buildup and throughout the war, all Japanese officers were required to wear a sword. Traditionally made swords were produced during this period, but in order to supply such large numbers of swords, blacksmiths with little or no knowledge of traditional Japanese sword manufacture were recruited. In addition, supplies of the Japanese steel (tamahagane) used for swordmaking were limited, so several other types of steel were used, as well. Quicker methods of forging were also used, such as the use of power-hammers, and quenching the blade in oil, rather than hand forging and water quenching. The non-traditionally made swords from this period are called \"showato,\" after the regnal name of the Emperor Hirohito, and in 1937, the Japanese government started requiring the use of special stamps on the tang (nakago) to distinguish these swords from traditionally made swords. During this period of war, older antique swords were remounted for use in military mounts. Presently, in Japan, showato are not considered to be \"true\" Japanese swords, and they can be confiscated. Outside of Japan, however, they are collected as historical artifacts.\n"], ["state", "published"], ["blogger_id", 1], ["blogger_type", "User"], ["created_at", "2017-08-24 05:54:11.338940"], ["updated_at", "2017-08-24 05:54:11.338940"]]
+  [1m[35mActsAsTaggableOn::Tag Load (1.0ms)[0m  SELECT "tags".* FROM "tags" WHERE (LOWER(name) = LOWER('swords') OR LOWER(name) = LOWER('katana') OR LOWER(name) = LOWER('katanas') OR LOWER(name) = LOWER('japan') OR LOWER(name) = LOWER('awesome'))
+  [1m[36mActsAsTaggableOn::Tag Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'swords' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "swords"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'katana' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "katana"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'katanas' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "katanas"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'japan' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "japan"]]
+  [1m[36mActsAsTaggableOn::Tag Load (0.1ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 2], ["taggable_type", "Blogit::Post"]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.2ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 5 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 2 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 5], ["context", "tags"], ["taggable_id", 2], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.359442"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 5]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 5]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.2ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 6 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 2 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 6], ["context", "tags"], ["taggable_id", 2], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.365829"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 6]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 6]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 7 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 2 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 7], ["context", "tags"], ["taggable_id", 2], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.372212"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 7]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 7]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 8 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 2 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 8], ["context", "tags"], ["taggable_id", 2], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.378654"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 8]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 8]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 4 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 2 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 4], ["context", "tags"], ["taggable_id", 2], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.384291"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 4]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 4]]
+  [1m[35m (161.7ms)[0m  commit transaction
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "blogit_posts" ("title", "description", "body", "state", "blogger_id", "blogger_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["title", "Have you ever tried this weird traditional food?!"], ["description", "Haggis is a savoury pudding containing sheep's pluck ([heart, liver and lungs](https://en.wikipedia.org/wiki/Offal)); minced with onion, oatmeal, suet, spices, and salt, mixed with stock, traditionally encased in the animal's stomach though now often in an artificial casing instead. According to the 2001 English edition of the Larousse Gastronomique: \"Although its description is not immediately appealing, haggis has an excellent nutty texture and delicious savoury flavour\".\n\nIt is believed that food similar to haggis (though not so named), perishable offal quickly cooked inside an animal's stomach, all conveniently available after a hunt, was eaten from ancient times.\n"], ["body", "Haggis is popularly assumed to be of Scottish origin, but there is a lack of historical evidence that could conclusively attribute its origins to any one place. The first known written recipes for a dish of the name made with offal and herbs, are, as \"hagese\", in the verse cookbook Liber Cure Cocorum dating from around 1430 in Lancashire, North West England, and, as \"hagws of a schepe\" from an English cookbook also of c1430.\n\n> For hagese'.\n> Þe hert of schepe, þe nere þou take,\n> Þo bowel noght þou shalle forsake,\n> On þe turbilen made, and boyled wele,\n> Hacke alle togeder with gode persole,\n\nThe Scottish poem Flyting of Dunbar and Kennedy, which is dated before 1520 (the generally accepted date prior to the death of William Dunbar, one of the composers), refers to 'haggeis'.\n\n> Thy fowll front had, and he that Bartilmo flaid;\n> The gallowis gaipis eftir thy graceles gruntill, As thow wald for ane haggeis, hungry gled.\n> — William Dunbar, Flyting of Dunbar and Kennedy\n\nAn early printed recipe for haggis appears in 1615 in “The English Huswife” by Gervase Markham. It contains a section entitled “Skill in Oate meale”.\n\n> The use and vertues of these two severall kinds of Oate-meales in maintaining the Family, they are so many (according to the many customes of many Nations) that it is almost impossible to recken all;” and then proceeds to give a description of “oat-meale mixed with blood, and the Liver of either Sheepe, Calfe or Swine, maketh that pudding which is called the Haggas or Haggus, of whose goodnesse it is in vaine to boast, because there is hardly to be found a man that doth not affect them\n> — Gervase Markham, The English Huswife\n\nFood writer Alan Davidson suggests that the Ancient Romans were the first known to have made products of the haggis type. Even earlier, a kind of primitive haggis is referred to in Homer's Odyssey, in book 20, (towards the end of the eighth century BC) when Odysseus is compared to \"a man before a great blazing fire turning swiftly this way and that a stomach full of fat and blood, very eager to have it roasted quickly.\" Haggis was \"born of necessity, as a way to utilize the least expensive cuts of meat and the innards as well.\"\n\nClarissa Dickson Wright says that it \"came to Scotland in a longship [i.e., from Scandinavia] even before Scotland was a single nation.\" She cites etymologist Walter William Skeat as further suggestion of possible Scandinavian origins: Skeat claimed that the hag– element of the word is derived from the Old Norse haggw or the Old Icelandic hoggva (höggva in modern Icelandic), Modern Scots hag, meaning 'to hew' or strike with a sharp weapon, relating to the chopped-up contents of the dish.\n\nDickson Wright suggests that haggis was invented as a way of cooking quick-spoiling offal near the site of a hunt, without the need to carry along an additional cooking vessel. The liver and kidneys could be grilled directly over a fire, but this treatment was unsuitable for the stomach, intestines, or lungs. Chopping up the lungs and stuffing the stomach with them and whatever fillers might have been on hand, then boiling the assembly—probably in a vessel made from the animal's hide—was one way to make sure these parts were not wasted.\n\n### Folklore\n\nIn the absence of hard facts as to haggis' origins, popular folklore has provided some notions. One is that the dish originates from the days of the old Scottish cattle drovers. When the men left the Highlands to drive their cattle to market in Edinburgh the women would prepare rations for them to eat during the long journey down through the glens. They used the ingredients that were most readily available in their homes and conveniently packaged them in a sheep's stomach allowing for easy transportation during the journey. Other speculations have been based on Scottish slaughtering practices. When a chieftain or laird required an animal to be slaughtered for meat (whether sheep or cattle) the workmen were allowed to keep the offal as their share.\n\nA joke sometimes maintained is that a haggis is a small Scottish animal with longer legs on one side, so that it can run around the steep hills of the Scottish Highlands without falling over. The Hebridean Haggis is \"thought\" to be the original native species. The Lewis Haggis is different from the Haggis on the mainland: unlike its mainland relative all its legs are of the same length. According to one poll, 33% of American visitors to Scotland believed haggis to be an animal\n"], ["state", "published"], ["blogger_id", 1], ["blogger_type", "User"], ["created_at", "2017-08-24 05:54:11.556502"], ["updated_at", "2017-08-24 05:54:11.556502"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT "tags".* FROM "tags" WHERE (LOWER(name) = LOWER('haggis') OR LOWER(name) = LOWER('food') OR LOWER(name) = LOWER('scotland'))
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'Haggis' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "Haggis"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'food' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "food"]]
+  [1m[36mActsAsTaggableOn::Tag Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "tags" WHERE "tags"."name" = 'scotland' LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "tags" ("name") VALUES (?)  [["name", "scotland"]]
+  [1m[36mActsAsTaggableOn::Tag Load (0.1ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 3], ["taggable_type", "Blogit::Post"]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 9 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 3 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 9], ["context", "tags"], ["taggable_id", 3], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.571573"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 9]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 9]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.1ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 10 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 3 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 10], ["context", "tags"], ["taggable_id", 3], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.577817"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 10]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 10]]
+  [1m[35mActsAsTaggableOn::Tagging Exists (0.2ms)[0m  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 11 AND "taggings"."taggable_type" = 'Blogit::Post' AND "taggings"."taggable_id" = 3 AND "taggings"."context" = 'tags' AND "taggings"."tagger_id" IS NULL AND "taggings"."tagger_type" IS NULL) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "taggings" ("tag_id", "context", "taggable_id", "taggable_type", "created_at") VALUES (?, ?, ?, ?, ?)[0m  [["tag_id", 11], ["context", "tags"], ["taggable_id", 3], ["taggable_type", "Blogit::Post"], ["created_at", "2017-08-24 05:54:11.584355"]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.1ms)[0m  SELECT  "tags".* FROM "tags" WHERE "tags"."id" = ? LIMIT 1  [["id", 11]]
+  [1m[36mSQL (0.1ms)[0m  [1mUPDATE "tags" SET "taggings_count" = COALESCE("taggings_count", 0) + 1 WHERE "tags"."id" = ?[0m  [["id", 11]]
+  [1m[35m (137.1ms)[0m  commit transaction
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:24:59 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Blogit::PostsController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count[0m
+  [1m[35mBlogit::Post Load (0.4ms)[0m  SELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'  ORDER BY created_at DESC LIMIT 5 OFFSET 0
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (103.6ms)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (11.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post.html.erb (125.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (139.8ms)
+Completed 500 Internal Server Error in 205ms (ActiveRecord: 1.8ms)
+
+ActionView::Template::Error ([blogit] The pygmentize command could not be found in your load path!
+         Please either do one of the following:
+
+         $ sudo easy_install Pygments # to install it
+         
+         or 
+         
+         set config.highlight_code_syntax to false in your blogit.rb config file.
+         
+):
+     7:   <%= render "blogit/posts/blogger_information", post: post %>
+     8:   
+     9:   <%# Render the body of this blog post (as Markdown) %>
+    10:   <%= format_content(post.short_body) %>
+    11: 
+    12:   <%# Render the no. of comments %>
+    13:   <%= render "blogit/posts/comments_count",
+  blogit (1.1.1) lib/blogit/parsers/markdown_parser.rb:57:in `ensure_pygments_is_installed'
+  blogit (1.1.1) lib/blogit/parsers/markdown_parser.rb:18:in `parsed'
+  blogit (1.1.1) app/helpers/blogit/application_helper.rb:23:in `format_content'
+  blogit (1.1.1) app/views/blogit/posts/_post.html.erb:10:in `block in __home_php____rvm_gems_ruby_______fb_gems_blogit_______app_views_blogit_posts__post_html_erb___3379726036027422858_35733940'
+  actionview (4.2.6) lib/action_view/helpers/capture_helper.rb:38:in `block in capture'
+  actionview (4.2.6) lib/action_view/helpers/capture_helper.rb:202:in `with_output_buffer'
+  actionview (4.2.6) lib/action_view/helpers/capture_helper.rb:38:in `capture'
+  actionview (4.2.6) lib/action_view/helpers/tag_helper.rb:106:in `content_tag'
+  blogit (1.1.1) app/views/blogit/posts/_post.html.erb:1:in `__home_php____rvm_gems_ruby_______fb_gems_blogit_______app_views_blogit_posts__post_html_erb___3379726036027422858_35733940'
+  actionview (4.2.6) lib/action_view/template.rb:145:in `block in render'
+  activesupport (4.2.6) lib/active_support/notifications.rb:166:in `instrument'
+  actionview (4.2.6) lib/action_view/template.rb:333:in `instrument'
+  actionview (4.2.6) lib/action_view/template.rb:143:in `render'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:436:in `block in collection_with_template'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:432:in `map'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:432:in `collection_with_template'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:324:in `render_collection'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:306:in `block in render'
+  actionview (4.2.6) lib/action_view/renderer/abstract_renderer.rb:39:in `block in instrument'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `block in instrument'
+  activesupport (4.2.6) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `instrument'
+  actionview (4.2.6) lib/action_view/renderer/abstract_renderer.rb:39:in `instrument'
+  actionview (4.2.6) lib/action_view/renderer/partial_renderer.rb:305:in `render'
+  actionview (4.2.6) lib/action_view/renderer/renderer.rb:51:in `render_partial'
+  actionview (4.2.6) lib/action_view/renderer/renderer.rb:25:in `render'
+  actionview (4.2.6) lib/action_view/helpers/rendering_helper.rb:32:in `render'
+  blogit (1.1.1) app/views/blogit/posts/index.html.erb:9:in `__home_php____rvm_gems_ruby_______fb_gems_blogit_______app_views_blogit_posts_index_html_erb___2354545588477835457_37753700'
+  actionview (4.2.6) lib/action_view/template.rb:145:in `block in render'
+  activesupport (4.2.6) lib/active_support/notifications.rb:166:in `instrument'
+  actionview (4.2.6) lib/action_view/template.rb:333:in `instrument'
+  actionview (4.2.6) lib/action_view/template.rb:143:in `render'
+  actionview (4.2.6) lib/action_view/renderer/template_renderer.rb:54:in `block (2 levels) in render_template'
+  actionview (4.2.6) lib/action_view/renderer/abstract_renderer.rb:39:in `block in instrument'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `block in instrument'
+  activesupport (4.2.6) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `instrument'
+  actionview (4.2.6) lib/action_view/renderer/abstract_renderer.rb:39:in `instrument'
+  actionview (4.2.6) lib/action_view/renderer/template_renderer.rb:53:in `block in render_template'
+  actionview (4.2.6) lib/action_view/renderer/template_renderer.rb:61:in `render_with_layout'
+  actionview (4.2.6) lib/action_view/renderer/template_renderer.rb:52:in `render_template'
+  actionview (4.2.6) lib/action_view/renderer/template_renderer.rb:14:in `render'
+  actionview (4.2.6) lib/action_view/renderer/renderer.rb:46:in `render_template'
+  actionview (4.2.6) lib/action_view/renderer/renderer.rb:27:in `render'
+  actionview (4.2.6) lib/action_view/rendering.rb:100:in `_render_template'
+  actionpack (4.2.6) lib/action_controller/metal/streaming.rb:217:in `_render_template'
+  actionview (4.2.6) lib/action_view/rendering.rb:83:in `render_to_body'
+  actionpack (4.2.6) lib/action_controller/metal/rendering.rb:32:in `render_to_body'
+  actionpack (4.2.6) lib/action_controller/metal/renderers.rb:37:in `render_to_body'
+  actionpack (4.2.6) lib/abstract_controller/rendering.rb:25:in `render'
+  actionpack (4.2.6) lib/action_controller/metal/rendering.rb:16:in `render'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:44:in `block (2 levels) in render'
+  activesupport (4.2.6) lib/active_support/core_ext/benchmark.rb:12:in `block in ms'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/benchmark.rb:308:in `realtime'
+  activesupport (4.2.6) lib/active_support/core_ext/benchmark.rb:12:in `ms'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:44:in `block in render'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:87:in `cleanup_view_runtime'
+  activerecord (4.2.6) lib/active_record/railties/controller_runtime.rb:25:in `cleanup_view_runtime'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:43:in `render'
+  actionpack (4.2.6) lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+  actionpack (4.2.6) lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+  actionpack (4.2.6) lib/abstract_controller/base.rb:198:in `process_action'
+  actionpack (4.2.6) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.2.6) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:117:in `call'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:555:in `block (2 levels) in compile'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:505:in `call'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:92:in `__run_callbacks__'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:778:in `_run_process_action_callbacks'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'
+  actionpack (4.2.6) lib/abstract_controller/callbacks.rb:19:in `process_action'
+  actionpack (4.2.6) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `block in instrument'
+  activesupport (4.2.6) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.2.6) lib/active_support/notifications.rb:164:in `instrument'
+  actionpack (4.2.6) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.2.6) lib/action_controller/metal/params_wrapper.rb:250:in `process_action'
+  activerecord (4.2.6) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.2.6) lib/abstract_controller/base.rb:137:in `process'
+  actionview (4.2.6) lib/action_view/rendering.rb:30:in `process'
+  actionpack (4.2.6) lib/action_controller/metal.rb:196:in `dispatch'
+  actionpack (4.2.6) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.2.6) lib/action_controller/metal.rb:237:in `block in action'
+  actionpack (4.2.6) lib/action_dispatch/routing/route_set.rb:74:in `dispatch'
+  actionpack (4.2.6) lib/action_dispatch/routing/route_set.rb:43:in `serve'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:43:in `block in serve'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:30:in `each'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:30:in `serve'
+  actionpack (4.2.6) lib/action_dispatch/routing/route_set.rb:817:in `call'
+  railties (4.2.6) lib/rails/engine.rb:518:in `call'
+  railties (4.2.6) lib/rails/railtie.rb:194:in `public_send'
+  railties (4.2.6) lib/rails/railtie.rb:194:in `method_missing'
+  actionpack (4.2.6) lib/action_dispatch/routing/mapper.rb:51:in `serve'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:43:in `block in serve'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:30:in `each'
+  actionpack (4.2.6) lib/action_dispatch/journey/router.rb:30:in `serve'
+  actionpack (4.2.6) lib/action_dispatch/routing/route_set.rb:817:in `call'
+  warden (1.2.7) lib/warden/manager.rb:36:in `block in call'
+  warden (1.2.7) lib/warden/manager.rb:35:in `catch'
+  warden (1.2.7) lib/warden/manager.rb:35:in `call'
+  rack (1.6.5) lib/rack/etag.rb:24:in `call'
+  rack (1.6.5) lib/rack/conditionalget.rb:25:in `call'
+  rack (1.6.5) lib/rack/head.rb:13:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/flash.rb:260:in `call'
+  rack (1.6.5) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.6.5) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/cookies.rb:560:in `call'
+  activerecord (4.2.6) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:653:in `call'
+  activerecord (4.2.6) lib/active_record/migration.rb:377:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:88:in `__run_callbacks__'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:778:in `_run_call_callbacks'
+  activesupport (4.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'
+  actionpack (4.2.6) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/remote_ip.rb:78:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  web-console (2.3.0) lib/web_console/middleware.rb:28:in `block in call'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `catch'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.6) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.5) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.5) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/static.rb:120:in `call'
+  rack (1.6.5) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.6) lib/rails/engine.rb:518:in `call'
+  railties (4.2.6) lib/rails/application.rb:165:in `call'
+  rack (1.6.5) lib/rack/lock.rb:17:in `call'
+  rack (1.6.5) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.5) lib/rack/handler/webrick.rb:88:in `service'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/httpserver.rb:140:in `service'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/httpserver.rb:96:in `run'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/server.rb:296:in `block in start_thread'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (7.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (22.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (14.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (27.4ms)
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 11:26:04 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Blogit::PostsController#index as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count[0m
+  [1m[35mBlogit::Post Load (0.2ms)[0m  SELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'  ORDER BY created_at DESC LIMIT 5 OFFSET 0
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (103.4ms)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (11.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.7ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.4ms)
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post.html.erb (125.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (2.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (142.6ms)
+Completed 200 OK in 362ms (Views: 306.5ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/blog/posts/1-everything-you-wanted-to-know-about-the-honey-badger" for 127.0.0.1 at 2017-08-24 11:26:25 +0530
+Processing by Blogit::PostsController#show as HTML
+  Parameters: {"id"=>"1-everything-you-wanted-to-know-about-the-honey-badger"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mBlogit::Post Load (0.3ms)[0m  [1mSELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' AND "blogit_posts"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.6ms)
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_share_bar.html.erb (0.7ms)
+  [1m[36mActsAsTaggableOn::Tag Load (0.9ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 1], ["taggable_type", "Blogit::Post"]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/tags/_tag.html.erb (1.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_tags.html.erb (25.6ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)  [["taggable_id", 1], ["taggable_type", "Blogit::Post"]]
+  [1m[36mBlogit::Post Load (0.4ms)[0m  [1mSELECT blogit_posts.*, COUNT(tags.id) AS count FROM blogit_posts, tags, taggings WHERE (blogit_posts.id != 1 AND blogit_posts.id = taggings.taggable_id AND taggings.taggable_type = 'Blogit::Post' AND taggings.tag_id = tags.id AND tags.name IN ('honeybadger','badass','animal','awesome') AND taggings.context = 'tags') AND "blogit_posts"."state" = 'published' GROUP BY blogit_posts.id  ORDER BY count DESC[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related_post.html.erb (0.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related.html.erb (4.9ms)
+  [1m[35mBlogit::Comment Load (0.2ms)[0m  SELECT "blogit_comments".* FROM "blogit_comments" WHERE "blogit_comments"."post_id" = ?  [["post_id", 1]]
+  Rendered collection (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_form.html.erb (29.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_active_record_comments.html.erb (33.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/show.html.erb within layouts/application (222.2ms)
+Completed 200 OK in 238ms (Views: 232.4ms | ActiveRecord: 2.5ms)
+
+
+Started GET "/blog/posts/1-everything-you-wanted-to-know-about-the-honey-badger" for 127.0.0.1 at 2017-08-24 11:26:43 +0530
+Processing by Blogit::PostsController#show as HTML
+  Parameters: {"id"=>"1-everything-you-wanted-to-know-about-the-honey-badger"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mBlogit::Post Load (0.1ms)[0m  SELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' AND "blogit_posts"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.7ms)
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_share_bar.html.erb (0.4ms)
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)  [["taggable_id", 1], ["taggable_type", "Blogit::Post"]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/tags/_tag.html.erb (1.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_tags.html.erb (7.4ms)
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 1], ["taggable_type", "Blogit::Post"]]
+  [1m[35mBlogit::Post Load (0.5ms)[0m  SELECT blogit_posts.*, COUNT(tags.id) AS count FROM blogit_posts, tags, taggings WHERE (blogit_posts.id != 1 AND blogit_posts.id = taggings.taggable_id AND taggings.taggable_type = 'Blogit::Post' AND taggings.tag_id = tags.id AND tags.name IN ('honeybadger','badass','animal','awesome') AND taggings.context = 'tags') AND "blogit_posts"."state" = 'published' GROUP BY blogit_posts.id  ORDER BY count DESC
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related_post.html.erb (0.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related.html.erb (7.2ms)
+  [1m[36mBlogit::Comment Load (0.1ms)[0m  [1mSELECT "blogit_comments".* FROM "blogit_comments" WHERE "blogit_comments"."post_id" = ?[0m  [["post_id", 1]]
+  Rendered collection (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_form.html.erb (2.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_active_record_comments.html.erb (4.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/show.html.erb within layouts/application (32.7ms)
+Completed 200 OK in 51ms (Views: 45.5ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/blog/posts/3-have-you-ever-tried-this-weird-traditional-food" for 127.0.0.1 at 2017-08-24 11:26:47 +0530
+Processing by Blogit::PostsController#show as HTML
+  Parameters: {"id"=>"3-have-you-ever-tried-this-weird-traditional-food"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mBlogit::Post Load (0.1ms)[0m  [1mSELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' AND "blogit_posts"."id" = ? LIMIT 1[0m  [["id", 3]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.5ms)
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_share_bar.html.erb (0.2ms)
+  [1m[36mActsAsTaggableOn::Tag Load (0.1ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 3], ["taggable_type", "Blogit::Post"]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/tags/_tag.html.erb (0.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_tags.html.erb (7.2ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)  [["taggable_id", 3], ["taggable_type", "Blogit::Post"]]
+  [1m[36mBlogit::Post Load (0.3ms)[0m  [1mSELECT blogit_posts.*, COUNT(tags.id) AS count FROM blogit_posts, tags, taggings WHERE (blogit_posts.id != 3 AND blogit_posts.id = taggings.taggable_id AND taggings.taggable_type = 'Blogit::Post' AND taggings.tag_id = tags.id AND tags.name IN ('Haggis','food','scotland') AND taggings.context = 'tags') AND "blogit_posts"."state" = 'published' GROUP BY blogit_posts.id  ORDER BY count DESC[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related_post.html.erb (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related.html.erb (5.1ms)
+  [1m[35mBlogit::Comment Load (0.1ms)[0m  SELECT "blogit_comments".* FROM "blogit_comments" WHERE "blogit_comments"."post_id" = ?  [["post_id", 3]]
+  Rendered collection (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_form.html.erb (2.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_active_record_comments.html.erb (4.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/show.html.erb within layouts/application (39.6ms)
+Completed 200 OK in 98ms (Views: 92.8ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/blog/posts/tagged/food" for 127.0.0.1 at 2017-08-24 11:26:52 +0530
+Processing by Blogit::PostsController#tagged as HTML
+  Parameters: {"tag"=>"food"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mActsAsTaggableOn::Tag Load (0.2ms)[0m  SELECT "tags".* FROM "tags" WHERE (LOWER(name) = LOWER('food'))
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" JOIN taggings posts_taggings_39ccb32  ON posts_taggings_39ccb32.taggable_id = blogit_posts.id AND posts_taggings_39ccb32.taggable_type = 'Blogit::Post' AND posts_taggings_39ccb32.tag_id = 10 WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count[0m
+  [1m[35mBlogit::Post Load (0.2ms)[0m  SELECT  "blogit_posts".* FROM "blogit_posts" JOIN taggings posts_taggings_39ccb32  ON posts_taggings_39ccb32.taggable_id = blogit_posts.id AND posts_taggings_39ccb32.taggable_type = 'Blogit::Post' AND posts_taggings_39ccb32.tag_id = 10 WHERE "blogit_posts"."state" = 'published'  ORDER BY created_at DESC LIMIT 5 OFFSET 0
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.5ms)
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (2.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post.html.erb (5.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (1.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (11.3ms)
+Completed 200 OK in 32ms (Views: 27.6ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/blog/posts/3-have-you-ever-tried-this-weird-traditional-food" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+Processing by Blogit::PostsController#show as HTML
+  Parameters: {"id"=>"3-have-you-ever-tried-this-weird-traditional-food"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mBlogit::Post Load (0.1ms)[0m  [1mSELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' AND "blogit_posts"."id" = ? LIMIT 1[0m  [["id", 3]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (1.7ms)
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_share_bar.html.erb (0.2ms)
+  [1m[36mActsAsTaggableOn::Tag Load (0.1ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)[0m  [["taggable_id", 3], ["taggable_type", "Blogit::Post"]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/tags/_tag.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_tags.html.erb (5.7ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_type" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL)  [["taggable_id", 3], ["taggable_type", "Blogit::Post"]]
+  [1m[36mBlogit::Post Load (1.1ms)[0m  [1mSELECT blogit_posts.*, COUNT(tags.id) AS count FROM blogit_posts, tags, taggings WHERE (blogit_posts.id != 3 AND blogit_posts.id = taggings.taggable_id AND taggings.taggable_type = 'Blogit::Post' AND taggings.tag_id = tags.id AND tags.name IN ('Haggis','food','scotland') AND taggings.context = 'tags') AND "blogit_posts"."state" = 'published' GROUP BY blogit_posts.id  ORDER BY count DESC[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related_post.html.erb (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_related.html.erb (5.1ms)
+  [1m[35mBlogit::Comment Load (0.1ms)[0m  SELECT "blogit_comments".* FROM "blogit_comments" WHERE "blogit_comments"."post_id" = ?  [["post_id", 3]]
+  Rendered collection (0.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_form.html.erb (2.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/comments/_active_record_comments.html.erb (3.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/show.html.erb within layouts/application (26.5ms)
+Completed 200 OK in 46ms (Views: 38.9ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 11:27:43 +0530
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:07:19 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (120.8ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (131.8ms)
+Completed 200 OK in 2559ms (Views: 1986.2ms | ActiveRecord: 120.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:09:03 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (23.7ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.0ms)
+Completed 200 OK in 738ms (Views: 416.3ms | ActiveRecord: 23.7ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 12:09:04 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 12:09:05 +0530
+
+
+Started GET "/blog" for 127.0.0.1 at 2017-08-24 12:09:20 +0530
+Processing by Blogit::PostsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35m (46.9ms)[0m  SELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published' LIMIT 5 OFFSET 0) subquery_for_count
+  [1m[36mBlogit::Post Load (4.4ms)[0m  [1mSELECT  "blogit_posts".* FROM "blogit_posts" WHERE "blogit_posts"."state" = 'published'  ORDER BY created_at DESC LIMIT 5 OFFSET 0[0m
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.8ms)
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (13.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.4ms)
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (1.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post_head.html.erb (0.6ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_blogger_information.html.erb (48.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_post.html.erb (135.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/_pagination.html.erb (57.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/blogit-1.1.1/app/views/blogit/posts/index.html.erb within layouts/application (373.5ms)
+Completed 500 Internal Server Error in 1753ms (ActiveRecord: 51.7ms)
+
+ActionView::Template::Error (undefined local variable or method `edit_user_registration_path' for #<#<Class:0x0000000377b188>:0x007f67aaa53b60>
+Did you mean?  edit_registration_path):
+    17: 
+    18: 	<% if user_signed_in? %>
+    19: 		Logged in as <strong><%= current_user.email %></strong>.
+    20: 		<%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+    21: 		<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    22: 	<% else %>
+    23: 		<%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> | 
+  app/views/layouts/application.html.erb:20:in `_app_views_layouts_application_html_erb___2339413666282433143_70041599556660'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (29.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (18.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (37.5ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:09:46 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (18.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (84.3ms)
+Completed 200 OK in 435ms (Views: 381.9ms | ActiveRecord: 18.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:09:58 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.1ms)
+Completed 200 OK in 63ms (Views: 60.7ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:11:29 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 83ms (Views: 81.1ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:12:39 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 45ms (Views: 43.1ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:13:14 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (151.9ms)
+Completed 200 OK in 791ms (Views: 704.8ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (3.5ms)
+Completed 200 OK in 31ms (Views: 28.7ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 12:13:39 +0530
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/devise-4.2.0/app/views/devise/registrations/edit.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 36ms (Views: 34.2ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 12:14:12 +0530
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:15:32 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered devise/registrations/edit.html.erb within layouts/application (36.7ms)
+Completed 200 OK in 288ms (Views: 252.8ms | ActiveRecord: 0.7ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:15:58 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"fEpYqvrIaAZjkpseFQ1bh3JenTPZIXn3ciB0JTJLIyIsbabDZbYBQVnlVSlexirLropv/AYIylY0yfIXtFKp2Q==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007fb181815da0 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-9217-11ubl1g.png>, @original_filename="Screenshot from 2017-07-22 11:56:33.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-07-22 11:56:33.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+Unpermitted parameter: image
+  Rendered devise/registrations/edit.html.erb within layouts/application (3.4ms)
+Completed 200 OK in 439ms (Views: 17.5ms | ActiveRecord: 0.3ms)
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1[0m
+
+
+Started GET "/users" for 127.0.0.1 at 2017-08-24 12:19:56 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+ActionController::RoutingError (No route matches [GET] "/users"):
+  actionpack (4.2.6) lib/action_dispatch/middleware/debug_exceptions.rb:21:in `call'
+  web-console (2.3.0) lib/web_console/middleware.rb:28:in `block in call'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `catch'
+  web-console (2.3.0) lib/web_console/middleware.rb:18:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.2.6) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.2.6) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.2.6) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.6.5) lib/rack/methodoverride.rb:22:in `call'
+  rack (1.6.5) lib/rack/runtime.rb:18:in `call'
+  activesupport (4.2.6) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+  rack (1.6.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.2.6) lib/action_dispatch/middleware/static.rb:120:in `call'
+  rack (1.6.5) lib/rack/sendfile.rb:113:in `call'
+  railties (4.2.6) lib/rails/engine.rb:518:in `call'
+  railties (4.2.6) lib/rails/application.rb:165:in `call'
+  rack (1.6.5) lib/rack/lock.rb:17:in `call'
+  rack (1.6.5) lib/rack/content_length.rb:15:in `call'
+  rack (1.6.5) lib/rack/handler/webrick.rb:88:in `service'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/httpserver.rb:140:in `service'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/httpserver.rb:96:in `run'
+  /home/php01/.rvm/rubies/ruby-2.3.0/lib/ruby/2.3.0/webrick/server.rb:296:in `block in start_thread'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/routes/_route.html.erb (1.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/routes/_route.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/routes/_table.html.erb (7.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (10.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (84.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (96.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (113.3ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:20:03 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"fEpYqvrIaAZjkpseFQ1bh3JenTPZIXn3ciB0JTJLIyIsbabDZbYBQVnlVSlexirLropv/AYIylY0yfIXtFKp2Q==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x000000024d7b80 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-9506-tqls19.png>, @original_filename="Screenshot from 2017-07-22 11:56:33.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-07-22 11:56:33.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 2]]
+Unpermitted parameter: image
+  Rendered devise/registrations/edit.html.erb within layouts/application (43.0ms)
+Completed 200 OK in 1055ms (Views: 766.9ms | ActiveRecord: 1.3ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:20:25 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"fEpYqvrIaAZjkpseFQ1bh3JenTPZIXn3ciB0JTJLIyIsbabDZbYBQVnlVSlexirLropv/AYIylY0yfIXtFKp2Q==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007f134a4b1b30 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-9506-mky2gb.png>, @original_filename="Screenshot from 2017-07-22 11:56:33.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-07-22 11:56:33.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 2]]
+Unpermitted parameter: image
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 148ms (ActiveRecord: 0.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:20:26 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 46ms (Views: 43.6ms | ActiveRecord: 0.1ms)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1[0m
+  [1m[35mUser Load (0.4ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:21:30 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered devise/registrations/edit.html.erb within layouts/application (172.3ms)
+Completed 200 OK in 880ms (Views: 800.5ms | ActiveRecord: 0.8ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:21:53 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"BLMMocvT5SeqR312C24PgBxIl7GVGoKBEK1T4qMC1rZUlPLIVK2MYJAws0FApX7MwJxlfkozMSBWRNXQJRtcTQ==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007fc6aa23b770 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-9643-vbz8hy.png>, @original_filename="Screenshot from 2017-08-22 18:42:58.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-08-22 18:42:58.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mUser Load (2.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+Unpermitted parameter: image
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  Rendered devise/registrations/edit.html.erb within layouts/application (3.4ms)
+Completed 200 OK in 468ms (Views: 23.1ms | ActiveRecord: 2.4ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:34:12 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 500 Internal Server Error in 74ms (ActiveRecord: 0.9ms)
+
+NoMethodError (undefined method `for' for #<Devise::ParameterSanitizer:0x00000004e1bb18>
+Did you mean?  fork):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (6.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (25.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (95.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (122.0ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:34:25 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+Completed 500 Internal Server Error in 21ms (ActiveRecord: 1.0ms)
+
+NoMethodError (undefined method `push' for nil:NilClass
+Did you mean?  puts):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (18.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (13.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (27.3ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:35:47 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered devise/registrations/edit.html.erb within layouts/application (85.9ms)
+Completed 200 OK in 897ms (Views: 860.9ms | ActiveRecord: 0.8ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:36:01 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"I9N+hxe7QzcZ8qp442pp3utqeprXHqDGjwl/fkr2iX5z9IDuiMUqcCOFZE+ooRiSN76IVQg3E2fJ4PlMzO8DhQ==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007fbb66242768 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-11316-1drax24.png>, @original_filename="Screenshot from 2017-08-22 18:42:58.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-08-22 18:42:58.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  Rendered devise/registrations/edit.html.erb within layouts/application (3.3ms)
+Completed 200 OK in 425ms (Views: 16.1ms | ActiveRecord: 0.9ms)
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1[0m
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:37:40 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"C7Io/jtRcXXmDw3iZiZ1iT7Eg04D6jfzGYSHKtXOOjNbldaXpC8YMtx4w9Ut7QTF4hBxgdzDhFJfbQEYU9ewyA==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x00000002d25878 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-11396-15s798u.png>, @original_filename="Screenshot from 2017-08-22 18:42:58.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-08-22 18:42:58.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 2]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (17.8ms)[0m  [1mUPDATE "users" SET "encrypted_password" = ?, "image" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["encrypted_password", "$2a$11$eUyRyz.QY.9b7l1Q9kLquO2upnCm8F1Kwkacv6nM3bWy2ROCh5LxC"], ["image", "Screenshot_from_2017-08-22_18_42_58.png"], ["updated_at", "2017-08-24 07:07:40.623629"], ["id", 2]]
+  [1m[35m (123.1ms)[0m  commit transaction
+Redirected to http://localhost:3000/
+Completed 302 Found in 496ms (ActiveRecord: 142.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:37:40 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+Completed 500 Internal Server Error in 24ms (ActiveRecord: 0.1ms)
+
+NameError (undefined local variable or method `resource_class' for #<HomeController:0x00000003f91700>):
+  app/controllers/application_controller.rb:12:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (21.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (13.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (28.7ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:38:50 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 500 Internal Server Error in 37ms (ActiveRecord: 1.0ms)
+
+NameError (undefined local variable or method `resource_class' for #<HomeController:0x00000004132258>):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.0ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (21.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (13.5ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (26.6ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:40:40 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+Completed 500 Internal Server Error in 43ms (ActiveRecord: 1.2ms)
+
+NameError (undefined local variable or method `resource_class' for #<HomeController:0x00000002bf38d8>):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (20.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (13.8ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (26.6ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:40:42 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 500 Internal Server Error in 32ms (ActiveRecord: 0.1ms)
+
+NameError (undefined local variable or method `resource_class' for #<HomeController:0x000000043e5c98>):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (4.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (21.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (14.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (27.7ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:40:55 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 500 Internal Server Error in 57ms (ActiveRecord: 0.7ms)
+
+NameError (undefined local variable or method `resource_class' for #<HomeController:0x00000004a5f858>):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (7.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (28.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (26.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (50.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+Processing by HomeController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 244ms (Views: 224.0ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 12:41:39 +0530
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:41:47 +0530
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.1ms)
+
+NoMethodError (undefined method `for' for #<Devise::ParameterSanitizer:0x00000003909b08>
+Did you mean?  fork):
+  app/controllers/application_controller.rb:11:in `configure_permitted_parameters'
+
+
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (5.1ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (20.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (14.6ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.2ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.3ms)
+  Rendered /home/php01/.rvm/gems/ruby-2.3.0@fb/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (28.2ms)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered devise/registrations/edit.html.erb within layouts/application (21.4ms)
+Completed 200 OK in 271ms (Views: 240.1ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/assets/home.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/home.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for 127.0.0.1 at 2017-08-24 12:45:26 +0530
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:45:37 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"SoAMF9IPUJmct8Gkh/kNzoG2FCp2STZdeT3/5q1SKFcap/J+TXE53qbAD5PMMnyCXWLm5alghfw/1HnUK0uirA==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007efcda328ab0 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-11630-3nl9h9.png>, @original_filename="Screenshot from 2017-08-22 18:42:58.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-08-22 18:42:58.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+  Rendered devise/registrations/edit.html.erb within layouts/application (3.4ms)
+Completed 200 OK in 319ms (Views: 15.7ms | ActiveRecord: 0.4ms)
+
+
+Started PUT "/users" for 127.0.0.1 at 2017-08-24 12:45:53 +0530
+Processing by Devise::RegistrationsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"SoAMF9IPUJmct8Gkh/kNzoG2FCp2STZdeT3/5q1SKFcap/J+TXE53qbAD5PMMnyCXWLm5alghfw/1HnUK0uirA==", "user"=>{"email"=>"karthick@yopmail.com", "image"=>#<ActionDispatch::Http::UploadedFile:0x007efcda5d9bb0 @tempfile=#<Tempfile:/tmp/RackMultipart20170824-11630-u7aav8.png>, @original_filename="Screenshot from 2017-08-22 18:42:58.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"user[image]\"; filename=\"Screenshot from 2017-08-22 18:42:58.png\"\r\nContent-Type: image/png\r\n">, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "current_password"=>"[FILTERED]"}, "commit"=>"Update"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["id", 2]]
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "users" SET "encrypted_password" = ?, "image" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["encrypted_password", "$2a$11$SWgGKL8JPejD7uD3pcFI7OAi.gPOcIWbZ8QI1EdHiwlJ75mjt6J9S"], ["image", "Screenshot_from_2017-08-22_18_42_58.png"], ["updated_at", "2017-08-24 07:15:53.448347"], ["id", 2]]
+  [1m[36m (144.2ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 475ms (ActiveRecord: 144.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-24 12:45:53 +0530
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (0.2ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["id", 2]]
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 19ms (Views: 17.4ms | ActiveRecord: 0.2ms)
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1[0m
